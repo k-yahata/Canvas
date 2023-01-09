@@ -34,3 +34,6 @@
 
 # Images
 *.bmp
+
+# Other
+.DS_STORE
