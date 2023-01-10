@@ -5,9 +5,9 @@
 
 class ColoredPolygon2D : public Polygon2D {
     public:
-    unsigned char r; // 0-31
-    unsigned char g; // 0-63
-    unsigned char b; // 0-31
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
     float alpha;
 
     inline void set_color( const unsigned char r, const unsigned char g, const unsigned char b, const float alpha ){
