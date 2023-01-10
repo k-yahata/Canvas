@@ -71,7 +71,13 @@ class Canvas{
     // constructor / コンストラクタ
     //================
     public:
-    Canvas();
+    Canvas();    
+    Canvas( const Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color>& src ){
+        for( int n = 0; n < n_data; n++ ){
+            this->data[n] = src.data[n];
+        }
+    };   
+    
 
     //================
     // Functions / 関数
