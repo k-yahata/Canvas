@@ -125,6 +125,8 @@ class Canvas{
     // If edges are crossing, the crossing area may not be filled. 
     // ポリゴンの辺を描画する。閉じる。低速だが高品質。ただし、辺が交差したところは塗られない仕様
     void draw_polygon_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
+    void draw_polygon_HQ_outer( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
+    void draw_polygon_HQ_inner( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
 
     // 
     private:
@@ -142,12 +144,14 @@ class Canvas{
     // ポリゴンの辺を描く。低速高品質版。
     void draw_segments_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U, const POLYGON_CLOSING_MODE oc = OPEN );
     
+    /*
     inline void fill_polygon( ColoredPolygon2D &polygon ){
         fill_polygon( polygon, polygon.r, polygon.g, polygon.b, polygon.alpha );
     }
     inline void draw_polygon( ColoredPolygon2D &polygon, const float weight){
         draw_polygon( polygon, weight, polygon.r, polygon.g, polygon.b, polygon.alpha );        
     }
+    */
     // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U );
 
 
@@ -213,26 +217,6 @@ uint8_t* Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::get_pointer_to_data( in
     return &(data[ ( y * height + x ) * bytes_per_pixel ]);    
 }
 
-// 
-/*
-// 参照先の画素値を、r,g,b,alphaに基づいて変更する
-template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
-void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_pixel( t_pixval &pixel, Color &color, const uint8_t alpha ){
-    char cur_r = (pixel >> 11);
-    char cur_g = ((pixel & 0x7E0) >> 5);
-    char cur_b = (pixel & 0x1F);
-    char new_r = alpha * ( cur_r - r ) + r;
-    char new_g = alpha * ( cur_g - g ) + g;
-    char new_b = alpha * ( cur_b - b ) + b;
-    if( new_r < 0 ) new_r = 0;
-    if( new_g < 0 ) new_g = 0;
-    if( new_b < 0 ) new_b = 0;
-    if( new_r >= 32 ) new_r = 31;
-    if( new_g >= 64 ) new_g = 63;
-    if( new_b >= 32 ) new_b = 31;
-    pixel = ( (unsigned short)(new_r) << 11 ) + ( (unsigned short)(new_g) << 5 ) + new_b;
-}
-*/
 
 // Draw filled polygon by the color, r, g, b, and alpha.
 // If the number of points of the polygon is less than two, this function do nothing.
@@ -364,7 +348,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_line( const Point2D p0
     Point2D n01 = p1 - p0;
     n01.normalize();
     Point2D v(-n01.y, n01.x);
-    v = v * (weight/2);
+    v = v * (weight*internal_scale/2);
     Polygon2D rectangle;
     rectangle.add_Point2D( p1 + v );
     rectangle.add_Point2D( p0 + v );
@@ -416,26 +400,33 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
         Point2D p0, p1, p2, p0i, p0o, p1i, p1o;
         Polygon2D leftside_points;
         Polygon2D rightside_points;
+        float length_factor = weight * internal_scale * 0.5f;
         if( oc == CLOSE ){
             p0 = polygon.get_Point2D(np-1); // previous vertex
             p1 = polygon.get_Point2D(0);    // current vertex
             p2 = polygon.get_Point2D(1);    // next vertex
             for( int n = 1; n <= np+1; n++ ){
                 // 交点算出
-                double x01 = p0.x - p1.x;
-                double y01 = p0.y - p1.y;
-                double x12 = p1.x - p2.x;
-                double y12 = p1.y - p2.y;
-                double r01 = sqrt( x01 * x01 + y01 * y01 );
-                double r12 = sqrt( x12 * x12 + y12 * y12 );
-                double length = r01 * r12 / fabs( x01 * y12 - y01 * x12 ) * weight * 0.5f;
-                Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
+                coordinate_t x01 = p0.x - p1.x;
+                coordinate_t y01 = p0.y - p1.y;
+                coordinate_t x12 = p1.x - p2.x;
+                coordinate_t y12 = p1.y - p2.y;
+                //float r01 = sqrt( x01 * x01 + y01 * y01 );
+                //float r12 = sqrt( x12 * x12 + y12 * y12 );
+                //float length = r01 * r12 / abs( x01 * y12 - y01 * x12 ) * weight * internal_scale * 0.5f;
+                //Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
+                float length = 1.0f / abs( x01 * y12 - y01 * x12 );
+                float r01 = sqrt( x01 * x01 + y01 * y01 ) * length_factor * length;
+                float r12 = sqrt( x12 * x12 + y12 * y12 ) * length_factor * length;
+                Point2D p1_temp = Point2D( x01 * r12, y01 * r12 )  - Point2D( x12 * r01, y12 * r01 );
                 // 左右判定
                 if( -x01 * p1_temp.y + y01 * p1_temp.x >= 0 ){
                     rightside_points.add_Point2D(p1 + p1_temp);
+                    //rightside_points.add_Point2D(p1 );
                     leftside_points.add_Point2D(p1 - p1_temp);
                 }else{
                     rightside_points.add_Point2D(p1 - p1_temp);
+                    //rightside_points.add_Point2D(p1 );
                     leftside_points.add_Point2D(p1 + p1_temp);
                 }
                 p0 = p1;
@@ -455,7 +446,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
             Point2D n01 = p1 - p0;
             n01.normalize();
             Point2D v(-n01.y, n01.x);
-            v = v * (weight/2);
+            v = v * (weight*internal_scale/2);
             if( v.x * n01.y - v.y * n01.x <= 0 ){
                 rightside_points.add_Point2D(p0 + v);
                 leftside_points.add_Point2D(p0 - v);
@@ -472,7 +463,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
                 double y12 = p1.y - p2.y;
                 double r01 = sqrt( x01 * x01 + y01 * y01 );
                 double r12 = sqrt( x12 * x12 + y12 * y12 );
-                double length = r01 * r12 / fabs( x01 * y12 - y01 * x12 ) * weight * 0.5f;
+                double length = r01 * r12 / fabs( x01 * y12 - y01 * x12 ) * weight*internal_scale * 0.5f;
                 Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
                 // 左右判定
                 if( -x01 * p1_temp.y + y01 * p1_temp.x >= 0 ){
@@ -489,7 +480,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
             n01 = p1 - p0;
             n01.normalize();
             v = Point2D(-n01.y, n01.x);
-            v = v * (weight/2);
+            v = v * (weight*internal_scale/2);
             if( v.x * n01.y - v.y * n01.x <= 0 ){
                 rightside_points.add_Point2D(p1 + v);
                 leftside_points.add_Point2D(p1 - v);
