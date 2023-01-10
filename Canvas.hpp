@@ -21,9 +21,10 @@ class Canvas
     
 //==============================================================*/
 #include <string>
+#include "Color.hpp"
 #include "Polygon2D.hpp"
-#include "ColoredPolygon.hpp"
-#include "VectorPicture.hpp"
+//#include "ColoredPolygon.hpp"
+//#include "VectorPicture.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -125,8 +126,6 @@ class Canvas{
     // If edges are crossing, the crossing area may not be filled. 
     // ポリゴンの辺を描画する。閉じる。低速だが高品質。ただし、辺が交差したところは塗られない仕様
     void draw_polygon_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
-    void draw_polygon_HQ_outer( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
-    void draw_polygon_HQ_inner( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
 
     // 
     private:
@@ -161,7 +160,7 @@ class Canvas{
     void fill_not_convex_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha );
     inline void alpha_blend( const Color color_org, const Color color_cur, const uint8_t alpha, Color &new_color ) const{
         for( int c = 0; c < Color::n_color; c++ ){
-            new_color.color[c] = ( ( alpha * ( static_cast<short>(color_org.color[c]) - static_cast<short>(color_cur.color[c]) )) >> 7 ) + color_cur.color[c];
+            new_color.color[c] = ( ( alpha * ( static_cast<color_alpha_blend_t>(color_org.color[c]) - static_cast<color_alpha_blend_t>(color_cur.color[c]) )) >> 7 ) + color_cur.color[c];
         }
         return; 
     }
@@ -415,9 +414,9 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
                 //float r12 = sqrt( x12 * x12 + y12 * y12 );
                 //float length = r01 * r12 / abs( x01 * y12 - y01 * x12 ) * weight * internal_scale * 0.5f;
                 //Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
-                float length = 1.0f / abs( x01 * y12 - y01 * x12 );
-                float r01 = sqrt( x01 * x01 + y01 * y01 ) * length_factor * length;
-                float r12 = sqrt( x12 * x12 + y12 * y12 ) * length_factor * length;
+                float length = length_factor / abs( x01 * y12 - y01 * x12 );
+                float r01 = sqrt( x01 * x01 + y01 * y01 ) * length;
+                float r12 = sqrt( x12 * x12 + y12 * y12 ) * length;
                 Point2D p1_temp = Point2D( x01 * r12, y01 * r12 )  - Point2D( x12 * r01, y12 * r01 );
                 // 左右判定
                 if( -x01 * p1_temp.y + y01 * p1_temp.x >= 0 ){
@@ -457,14 +456,14 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
 
             for( int n = 2; n < np; n++ ){
                 // 交点算出
-                double x01 = p0.x - p1.x;
-                double y01 = p0.y - p1.y;
-                double x12 = p1.x - p2.x;
-                double y12 = p1.y - p2.y;
-                double r01 = sqrt( x01 * x01 + y01 * y01 );
-                double r12 = sqrt( x12 * x12 + y12 * y12 );
-                double length = r01 * r12 / fabs( x01 * y12 - y01 * x12 ) * weight*internal_scale * 0.5f;
-                Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
+                coordinate_t x01 = p0.x - p1.x;
+                coordinate_t y01 = p0.y - p1.y;
+                coordinate_t x12 = p1.x - p2.x;
+                coordinate_t y12 = p1.y - p2.y;
+                float length = length_factor / abs( x01 * y12 - y01 * x12 );
+                float r01 = sqrt( x01 * x01 + y01 * y01 ) * length;
+                float r12 = sqrt( x12 * x12 + y12 * y12 ) * length;
+                Point2D p1_temp = Point2D( x01 * r12, y01 * r12 )  - Point2D( x12 * r01, y12 * r01 );
                 // 左右判定
                 if( -x01 * p1_temp.y + y01 * p1_temp.x >= 0 ){
                     rightside_points.add_Point2D(p1 + p1_temp);
