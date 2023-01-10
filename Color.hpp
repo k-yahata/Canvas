@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <iostream>
 
+typedef uint8_t color_t;
+typedef int16_t color_alpha_blend_t;
+
 template<uint8_t N_COLOR>
 class Color{
     public:
@@ -29,14 +32,14 @@ class Color{
 
 class ColorGray : public Color<1>{
     public:
-    ColorGray( const uint8_t intensity = 0 ){
+    ColorGray( const color_t intensity = 0 ){
         this->color[0] = intensity;
     }
 };
 
 class ColorRGB : public Color<3>{
     public:
-    ColorRGB( const uint8_t r = 0, const uint8_t g = 0, const uint8_t b = 0 ){
+    ColorRGB( const color_t r = 0, const color_t g = 0, const color_t b = 0 ){
         this->color[0] = r;
         this->color[1] = g;
         this->color[2] = b;
