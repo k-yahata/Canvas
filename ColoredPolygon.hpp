@@ -2,18 +2,36 @@
 #define __COLORED_POLYGON_2D_HPP_
 
 #include "Polygon2D.hpp"
+#include "Color.hpp"
 
-class ColoredPolygon2D : public Polygon2D {
+class ColoredPolygon2D{
+
+    //================
+    // variables 
+    //================
     public:
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    float alpha;
+    Polygon2D polygon;
+    ColorRGB face_color;
+    uint8_t alpha;
 
-    inline void set_color( const unsigned char r, const unsigned char g, const unsigned char b, const float alpha ){
-        this->r = r;
-        this->g = g;
-        this->b = b;
+    public:
+    //================
+    // constructor / コンストラクタ
+    //================
+    ColoredPolygon2D();
+    ColoredPolygon2D( const Polygon2D &polygon );
+    ColoredPolygon2D( const Polygon2D &polygon, const ColorRGB face_color );
+    ColoredPolygon2D( const ColorRGB face_color );
+    ColoredPolygon2D( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 0 );
+
+    //================
+    // funcsions 
+    //================
+    public:
+    inline void set_color( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 0 ){
+        this->face_color.color[0] = r;
+        this->face_color.color[1] = g;
+        this->face_color.color[2] = b;
         this->alpha = alpha;
     }
 };

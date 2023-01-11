@@ -23,8 +23,8 @@ class Canvas
 #include <string>
 #include "Color.hpp"
 #include "Polygon2D.hpp"
-//#include "ColoredPolygon.hpp"
-//#include "VectorPicture.hpp"
+#include "ColoredPolygon.hpp"
+#include "VectorPicture.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -149,14 +149,13 @@ class Canvas{
     // ポリゴンの辺を描く。低速高品質版。
     void draw_segments_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U, const POLYGON_CLOSING_MODE oc = OPEN );
     
-    /*
+    
     inline void fill_polygon( ColoredPolygon2D &polygon ){
-        fill_polygon( polygon, polygon.r, polygon.g, polygon.b, polygon.alpha );
+        fill_polygon( polygon, polygon.face_color );
     }
     inline void draw_polygon( ColoredPolygon2D &polygon, const float weight){
-        draw_polygon( polygon, weight, polygon.r, polygon.g, polygon.b, polygon.alpha );        
+        draw_polygon( polygon, weight, polygon.face_color );        
     }
-    */
     // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U );
 
 
@@ -167,6 +166,12 @@ class Canvas{
     inline void alpha_blend( const Color color_org, const Color color_cur, const uint8_t alpha, Color &new_color ) const{
         for( int c = 0; c < Color::n_color; c++ ){
             new_color.color[c] = ( ( alpha * ( static_cast<color_alpha_blend_t>(color_org.color[c]) - static_cast<color_alpha_blend_t>(color_cur.color[c]) )) >> 7 ) + color_cur.color[c];
+            // antialias off
+            // if( alpha <= 64 ){
+            //     new_color.color[c] = color_cur.color[c];
+            // }else{
+            //     new_color.color[c] = color_org.color[c];
+            // }
         }
         return; 
     }

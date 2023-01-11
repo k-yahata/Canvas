@@ -5,6 +5,7 @@ template < unsigned int WIDTH, unsigned int HEIGHT >
 class Canvas_RGB565 : public Canvas<WIDTH, HEIGHT, 2, ColorRGB >{
 
     inline void get_Color( uint8_t *p_data, ColorRGB &color ) const override{
+        // RRRRRGGGGGGBBBBB
         uint8_t b0 = *p_data;
         uint8_t b1 = *(p_data+1);
         color.color[0] = ( b0 >> 3 );

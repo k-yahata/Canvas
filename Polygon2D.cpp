@@ -651,12 +651,16 @@ Polygon2D Polygon2D::rotate( const float deg ) const{
     ret_polygon.rotate_equal(deg);
     return ret_polygon;
 }
-Polygon2D & Polygon2D::rotate_equal( const float deg ){
-    float cx = (this->minX+this->maxX) * 0.5f;
-    float cy = (this->minY+this->maxY) * 0.5f;
-    Point2D center(cx,cy);
 
-    *this -= center;
+Polygon2D Polygon2D::rotate( const float deg, Point2D center ) const{
+    Polygon2D ret_polygon = *this;
+    ret_polygon -= center;
+    ret_polygon.rotate_equal(deg);
+    ret_polygon += center;
+    return ret_polygon;
+}
+
+Polygon2D & Polygon2D::rotate_equal( const float deg ){
 
     int n = this->vertices.size();
     float rad = deg * 3.1415926535f / 180.0f;
@@ -665,8 +669,8 @@ Polygon2D & Polygon2D::rotate_equal( const float deg ){
     for( int i = 0; i < n; i++ ){
         float tx = cos_t * this->vertices[i].x - sin_t * this->vertices[i].y;
         float ty = sin_t * this->vertices[i].x + cos_t * this->vertices[i].y;
-        this->vertices[i].x = tx + cx;
-        this->vertices[i].y = ty + cy;
+        this->vertices[i].x = tx;
+        this->vertices[i].y = ty;
         if( i == 0 ){
             this->minX = this->vertices[i].x;
             this->maxX = this->vertices[i].x;
@@ -682,21 +686,22 @@ Polygon2D & Polygon2D::rotate_equal( const float deg ){
 
     return *this;
 } 
+Polygon2D & Polygon2D::rotate_equal( const float deg, Point2D center ){
+    *this -= center;
+    this->rotate_equal(deg);
+    *this += center;
+    return *this;
+}
+
 
 Polygon2D & Polygon2D::rotate_equal( const float cos_t, const float sin_t ){
-
-    float cx = (this->minX+this->maxX) * 0.5f;
-    float cy = (this->minY+this->maxY) * 0.5f;
-    Point2D center(cx,cy);
-
-    *this -= center;
 
     int n = this->vertices.size();
     for( int i = 0; i < n; i++ ){
         float tx = cos_t * this->vertices[i].x - sin_t * this->vertices[i].y;
         float ty = sin_t * this->vertices[i].x + cos_t * this->vertices[i].y;
-        this->vertices[i].x = tx + cx;
-        this->vertices[i].y = ty + cy;
+        this->vertices[i].x = tx;
+        this->vertices[i].y = ty;
         if( i == 0 ){
             this->minX = this->vertices[i].x;
             this->maxX = this->vertices[i].x;

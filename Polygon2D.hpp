@@ -14,10 +14,10 @@ class Polygon2D{
     // data
     std::vector<Point2D> vertices;
     // bounding box
-    float minX;
-    float maxX;
-    float minY;
-    float maxY;
+    coordinate_t minX;
+    coordinate_t maxX;
+    coordinate_t minY;
+    coordinate_t maxY;
     // convex or not
     bool is_convex; 
     // add_Point2Dの途中で使用する。
@@ -77,7 +77,9 @@ class Polygon2D{
     Polygon2D operator / (const float f) const;
 
     Polygon2D rotate( const float deg ) const; 
+    Polygon2D rotate( const float deg, Point2D center ) const; 
     Polygon2D & rotate_equal( const float deg ); 
+    Polygon2D & rotate_equal( const float deg, Point2D center ); 
     Polygon2D & rotate_equal( const float cos_theta, const float sin_theta ); 
 
     void concat( const Polygon2D p );
