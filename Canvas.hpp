@@ -151,10 +151,10 @@ class Canvas{
     
     
     inline void fill_polygon( ColoredPolygon2D &polygon ){
-        fill_polygon( polygon, polygon.face_color );
+        fill_polygon( polygon.polygon, polygon.face_color, polygon.alpha );
     }
     inline void draw_polygon( ColoredPolygon2D &polygon, const float weight){
-        draw_polygon( polygon, weight, polygon.face_color );        
+        draw_polygon( polygon.polygon, weight, polygon.face_color, polygon.alpha );        
     }
     // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U );
 
@@ -166,12 +166,12 @@ class Canvas{
     inline void alpha_blend( const Color color_org, const Color color_cur, const uint8_t alpha, Color &new_color ) const{
         for( int c = 0; c < Color::n_color; c++ ){
             new_color.color[c] = ( ( alpha * ( static_cast<color_alpha_blend_t>(color_org.color[c]) - static_cast<color_alpha_blend_t>(color_cur.color[c]) )) >> 7 ) + color_cur.color[c];
-            // antialias off
-            // if( alpha <= 64 ){
-            //     new_color.color[c] = color_cur.color[c];
-            // }else{
-            //     new_color.color[c] = color_org.color[c];
-            // }
+//            //antialias off
+        //    if( alpha <= 64 ){
+        //        new_color.color[c] = color_cur.color[c];
+        //    }else{
+        //        new_color.color[c] = color_org.color[c];
+        //    }
         }
         return; 
     }
