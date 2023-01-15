@@ -1,5 +1,5 @@
 # What is this?
-- This repository contains classes to provide 2D vector graphics with antialiasing
+- This repository contains classes to provide 2D vector graphics with __antialiasing__
 and alpha blending for small displays drived by microcomputers like ESP32. 
 
 - These classes only provide image data array and draw functions to edit the image data, 
