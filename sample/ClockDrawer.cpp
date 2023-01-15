@@ -33,6 +33,7 @@ void Drawer::init(){
     frame.face_color = this->color_dial;
     frame.alpha = 0;
     this->dial.addColoredPolygon(frame);
+    frame.polygon.print();
 
     // ticks
     frame.polygon.clear();
@@ -46,25 +47,31 @@ void Drawer::init(){
         this->dial.addColoredPolygon( frame );
     }
 
+    
+    uint8_t np = this->dial.p.size();
+    for( int p = 0; p < np; p++ ){
+        canvas_with_dial.fill_polygon( this->dial.p[p] );
+    }
+
 
 }
 
 void Drawer::draw_clock( Canvas_SSD1331 &canvas, int hour, int min, float second ){
 
+    // clear by dial
+    canvas = canvas_with_dial;
+
+    // draw hands
     float deg_hour_hand   = hour * 30 + min * 0.5f + second / 120.0f;
     float deg_minute_hand = min * 6 + second * 0.1f;
     float deg_second_hand = second * 6.0f;
     Point2D center(48,32);
-    hour_hand.rotate_equal( deg_hour_hand, center );
-    minute_hand.rotate_equal( deg_minute_hand, center );
-    second_hand.rotate_equal( deg_second_hand, center );
+    Polygon2D h = hour_hand.rotate( deg_hour_hand, center );
+    Polygon2D m = minute_hand.rotate( deg_minute_hand, center );
+    Polygon2D s = second_hand.rotate( deg_second_hand, center );
 
-    u_int8_t np = this->dial.p.size();
-    for( int p = 0; p < np; p++ ){
-        canvas.fill_polygon( this->dial.p[p] );
-    }
-    canvas.fill_polygon( hour_hand, const_cast<ColorRGB&>(color_hour_hand), 0);
-    canvas.fill_polygon( minute_hand, const_cast<ColorRGB&>(color_minute_hand), 0);
-    canvas.fill_polygon( second_hand, const_cast<ColorRGB&>(color_second_hand), 0);
+    canvas.fill_polygon( h, const_cast<ColorRGB&>(color_hour_hand), 0);
+    canvas.fill_polygon( m, const_cast<ColorRGB&>(color_minute_hand), 0);
+    canvas.fill_polygon( s, const_cast<ColorRGB&>(color_second_hand), 0);
 
 }

@@ -23,6 +23,8 @@ class Drawer{
     static const ColorRGB color_minute_hand;
     static const ColorRGB color_second_hand;
 
+    Canvas_SSD1331 canvas_with_dial;
+
 };
 
 

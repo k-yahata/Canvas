@@ -99,33 +99,32 @@ void Polygon2D::add_Point2D( const Point2D p ){
 }
 
 // ほぼ円(正24角形)
-void Polygon2D::circle24( Point2D center, float raduis ){
+void Polygon2D::circle24( Point2D center, float radius ){
     clear();
-    add_Point2D(Point2D( 1.000f,  0.000f));
-    add_Point2D(Point2D( 0.966f,  0.259f));
-    add_Point2D(Point2D( 0.866f,  0.500f));
-    add_Point2D(Point2D( 0.707f,  0.707f));
-    add_Point2D(Point2D( 0.500f,  0.866f));
-    add_Point2D(Point2D( 0.259f,  0.966f));
-    add_Point2D(Point2D( 0.000f,  1.000f));
-    add_Point2D(Point2D(-0.259f,  0.966f));
-    add_Point2D(Point2D(-0.500f,  0.866f));
-    add_Point2D(Point2D(-0.707f,  0.707f));
-    add_Point2D(Point2D(-0.866f,  0.500f));
-    add_Point2D(Point2D(-0.966f,  0.259f));
-    add_Point2D(Point2D(-1.000f,  0.000f));
-    add_Point2D(Point2D(-0.966f, -0.259f));
-    add_Point2D(Point2D(-0.866f, -0.500f));
-    add_Point2D(Point2D(-0.707f, -0.707f));
-    add_Point2D(Point2D(-0.500f, -0.866f));
-    add_Point2D(Point2D(-0.259f, -0.966f));
-    add_Point2D(Point2D(-0.000f, -1.000f));
-    add_Point2D(Point2D( 0.259f, -0.966f));
-    add_Point2D(Point2D( 0.500f, -0.866f));
-    add_Point2D(Point2D( 0.707f, -0.707f));
-    add_Point2D(Point2D( 0.866f, -0.500f));
-    add_Point2D(Point2D( 0.966f, -0.259f));
-    *this *= (raduis * internal_scale);
+    add_Point2D(Point2D( 1.000f * radius,  0.000f * radius));
+    add_Point2D(Point2D( 0.966f * radius,  0.259f * radius));
+    add_Point2D(Point2D( 0.866f * radius,  0.500f * radius));
+    add_Point2D(Point2D( 0.707f * radius,  0.707f * radius));
+    add_Point2D(Point2D( 0.500f * radius,  0.866f * radius));
+    add_Point2D(Point2D( 0.259f * radius,  0.966f * radius));
+    add_Point2D(Point2D( 0.000f * radius,  1.000f * radius));
+    add_Point2D(Point2D(-0.259f * radius,  0.966f * radius));
+    add_Point2D(Point2D(-0.500f * radius,  0.866f * radius));
+    add_Point2D(Point2D(-0.707f * radius,  0.707f * radius));
+    add_Point2D(Point2D(-0.866f * radius,  0.500f * radius));
+    add_Point2D(Point2D(-0.966f * radius,  0.259f * radius));
+    add_Point2D(Point2D(-1.000f * radius,  0.000f * radius));
+    add_Point2D(Point2D(-0.966f * radius, -0.259f * radius));
+    add_Point2D(Point2D(-0.866f * radius, -0.500f * radius));
+    add_Point2D(Point2D(-0.707f * radius, -0.707f * radius));
+    add_Point2D(Point2D(-0.500f * radius, -0.866f * radius));
+    add_Point2D(Point2D(-0.259f * radius, -0.966f * radius));
+    add_Point2D(Point2D(-0.000f * radius, -1.000f * radius));
+    add_Point2D(Point2D( 0.259f * radius, -0.966f * radius));
+    add_Point2D(Point2D( 0.500f * radius, -0.866f * radius));
+    add_Point2D(Point2D( 0.707f * radius, -0.707f * radius));
+    add_Point2D(Point2D( 0.866f * radius, -0.500f * radius));
+    add_Point2D(Point2D( 0.966f * radius, -0.259f * radius));
     *this += center;
 }
 

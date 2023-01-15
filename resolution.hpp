@@ -8,8 +8,8 @@
 #ifndef USE_SINGLE_PRECISION_FLOATING_COORDINATES
     typedef int16_t coordinate_t;
     typedef int32_t coordinate_sq_t;
-    #define internal_scale 10
-    #define half_internal_scale 5
+    #define internal_scale (2 * COODINATES_RESOLUTION)
+    #define half_internal_scale (COODINATES_RESOLUTION)
     typedef int16_t pixel_index_t;
 #else
     typedef float coordinate_t;

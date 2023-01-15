@@ -37,4 +37,4 @@
 
 # Other
 .DS_STORE
-.json
+*.json
