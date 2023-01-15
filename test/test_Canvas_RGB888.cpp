@@ -36,26 +36,6 @@ int main(){
     copied_canvas.saveBMP("test_copied_canvas.bmp");
 
 
-    Canvas_SSD1331 canvas3;
-    Polygon2D outer, inner;
-    outer.circle24( Point2D(48, 32), 30 );
-    outer.add_Point2D( outer.get_Point2D(0) );
-    inner.circle24( Point2D(48, 32), 28 );
-    inner.add_Point2D( inner.get_Point2D(0) );
-    outer.concat_inversely(inner);
-    ColorRGB white(31,63,31 );
-    canvas3.fill_polygon( outer, white, 0 );
-    Polygon2D hour;
-    hour.add_Point2D(  48, 6 );
-    hour.add_Point2D(  48, 10 );
-    for( int t = 0; t < 360; t+=30 ){
-        hour.rotate_equal(30, Point2D(48,32));
-        canvas3.draw_segments(hour, 2.0, white, 0 );
-    }
-
-    canvas3.saveBMP("test_circle.bmp");
-    
-
 
     return 0;
 }
