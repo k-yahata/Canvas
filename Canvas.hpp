@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __CANVAS_HPP__
+#define __CANVAS_HPP__
+
 /*==============================================================//
 class Canvas
     A super template class of image data with 2D polygon drawing functions.
@@ -98,12 +100,12 @@ class Canvas{
     // data pointer
     public:
     // get the pointer of the first pixel 
-    inline uint8_t* get_pointer_to_data() const {return data;}
+    inline uint8_t* get_pointer_to_data() {return data;}
     // get the pointer of the pixel at (x,y). If the position is out of image, the position is shifted to inside of the image.
     uint8_t* get_pointer_to_data( int x, int y ) const;
     protected:
     // get the pointer of the pixel at (x,y). No range check
-    inline uint8_t* get_pointer_to_data_unsafe( int x, int y ) const { return const_cast<uint8_t *>(&(data[(y*width+x)*bytes_per_pixel])); }
+    inline uint8_t* get_pointer_to_data_unsafe( int x, int y ) { return const_cast<uint8_t *>(&(data[(y*width+x)*bytes_per_pixel])); }
 
 
     //---------------------
@@ -425,7 +427,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
                 //float r12 = sqrt( x12 * x12 + y12 * y12 );
                 //float length = r01 * r12 / abs( x01 * y12 - y01 * x12 ) * weight * internal_scale * 0.5f;
                 //Point2D p1_temp = (Point2D( x01, y01 ) / r01 - Point2D( x12, y12 ) / r12 ) * length;
-                float length = length_factor / abs( x01 * y12 - y01 * x12 );
+                float length = length_factor / fabs( x01 * y12 - y01 * x12 );
                 float r01 = sqrt( x01 * x01 + y01 * y01 ) * length;
                 float r12 = sqrt( x12 * x12 + y12 * y12 ) * length;
                 Point2D p1_temp = Point2D( x01 * r12, y01 * r12 )  - Point2D( x12 * r01, y12 * r01 );
@@ -471,7 +473,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
                 coordinate_t y01 = p0.y - p1.y;
                 coordinate_t x12 = p1.x - p2.x;
                 coordinate_t y12 = p1.y - p2.y;
-                float length = length_factor / abs( x01 * y12 - y01 * x12 );
+                float length = length_factor / fabs( x01 * y12 - y01 * x12 );
                 float r01 = sqrt( x01 * x01 + y01 * y01 ) * length;
                 float r12 = sqrt( x12 * x12 + y12 * y12 ) * length;
                 Point2D p1_temp = Point2D( x01 * r12, y01 * r12 )  - Point2D( x12 * r01, y12 * r01 );
@@ -574,3 +576,5 @@ bool Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::saveBMP(std::string file_na
 #endif
     return true;
 }
+
+#endif
