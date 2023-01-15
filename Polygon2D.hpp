@@ -48,8 +48,8 @@ class Polygon2D{
     // ほぼ円(正24角形)
     void circle24( Point2D center, float raduis ); // radiusは中で10倍
     // indexの点を返す。
-    Point2D get_Point2D(const u_int16_t index) const;
-    inline u_int16_t size(){return this->vertices.size();} 
+    Point2D get_Point2D(const uint16_t index) const;
+    inline uint16_t size(){return this->vertices.size();} 
     //
     bool is_convex_polygon() const{return this->is_convex;}
     bool is_the_point_inside(const coordinate_t x, const coordinate_t y, coordinate_t &first_crossing_point_X ) const;

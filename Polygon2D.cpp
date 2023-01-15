@@ -132,7 +132,7 @@ void Polygon2D::circle24( Point2D center, float raduis ){
 
 // 指定したindexのPoint2Dオブジェクトを返す。
 // indexが負なら先頭を、indexがオブジェクト数を超えていたら最後のオブジェクトを返す
-Point2D Polygon2D::get_Point2D(const u_int16_t index) const{
+Point2D Polygon2D::get_Point2D(const uint16_t index) const{
     if( index < 0 ) return vertices[0];
     if( index >= this->vertices.size() ) return vertices[this->vertices.size() - 1];
     return vertices[index];
