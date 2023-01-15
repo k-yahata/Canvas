@@ -1,3 +1,6 @@
+#ifndef __CANVAS_RGB565_HPP__
+#define __CANVAS_RGB565_HPP__
+
 #include "Canvas.hpp"
 #include "Color.hpp"
 
@@ -25,3 +28,5 @@ class Canvas_RGB565 : public Canvas<WIDTH, HEIGHT, 2, ColorRGB >{
 
 
 };
+
+#endif
