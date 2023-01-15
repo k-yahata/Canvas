@@ -105,7 +105,7 @@ class Canvas{
     uint8_t* get_pointer_to_data( int x, int y ) const;
     protected:
     // get the pointer of the pixel at (x,y). No range check
-    inline uint8_t* get_pointer_to_data_unsafe( int x, int y ) const { return const_cast<uint8_t *>(&(data[(y*width+x)*bytes_per_pixel])); }
+    inline uint8_t* get_pointer_to_data_unsafe( int x, int y ) { return const_cast<uint8_t *>(&(data[(y*width+x)*bytes_per_pixel])); }
 
 
     //---------------------
