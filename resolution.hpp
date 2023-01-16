@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __RESOLUTION_HPP__
+#define __RESOLUTION_HPP__
+
 #include <stdint.h>
 
 #define COODINATES_RESOLUTION 5
@@ -17,4 +19,6 @@
     #define internal_scale 1.0f
     #define half_internal_scale 0.5f
     typedef int16_t pixel_index_t;
+#endif
+
 #endif

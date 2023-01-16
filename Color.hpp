@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COLOR_HPP__
+#define __COLOR_HPP__
+
 #include <cstdint>
 #include <iostream>
 
@@ -45,3 +47,5 @@ class ColorRGB : public Color<3>{
         this->color[2] = b;
     }
 };
+
+#endif

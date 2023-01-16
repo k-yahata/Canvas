@@ -1,3 +1,6 @@
+#ifndef __CANVAS_RGB232_HPP__
+#define __CANVAS_RGB232_HPP__
+
 #include "Canvas.hpp"
 #include "Color.hpp"
 
@@ -21,3 +24,5 @@ class Canvas_RGB232 : public Canvas<WIDTH, HEIGHT, 1, ColorRGB >{
         b8 = color.color[2] * 0x55;
     };
 };
+
+#endif

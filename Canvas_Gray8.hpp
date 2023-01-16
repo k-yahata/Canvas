@@ -1,3 +1,6 @@
+#ifndef __CANVAS_GRAY8_HPP__
+#define __CANVAS_GRAY8_HPP__
+
 #include "Canvas.hpp"
 #include "Color.hpp"
 
@@ -18,3 +21,5 @@ class Canvas_Gray8 : public Canvas<WIDTH, HEIGHT, 1, ColorGray>{
     };
 
 };
+
+#endif
