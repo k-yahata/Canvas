@@ -1,4 +1,4 @@
-[日本語](ReadMe_ja.md)
+[日本語はこちら](ReadMe_ja.md)
 # What is this?
 - This repository contains classes to provide 2D vector graphics with __antialiasing__
 and alpha blending for small displays drived by microcomputers like ESP32. 
