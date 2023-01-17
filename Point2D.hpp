@@ -3,23 +3,24 @@
 /*==============================================================//
 class Point2D 
    Cooridinates of point in 2 dimensional plane.
-   The coordinates are treated as int16_t and the values are 
-   internally multiplied by internal_scale.
-   2次元の点の座標のデータクラス,マイコン向け 
+   The type of coordinates( int16_t or float) can be selected in resolution.hpp.
+   When int16_t is used, the values are multiplied by the internal_scale defined in the resolution.hpp.
 //==============================================================*/
 #include "resolution.hpp"
 class Point2D{
     // member
     public:
+    // internal coorinates, which are scaled by internal_scale
     coordinate_t x;
     coordinate_t y;
 
     // constructors
     public:
-    // Constructor for user coordinates. 
+    // Constructor to define the point in user coordinates. 
+    // The x and y will be multiplied by the internal_scale.
     Point2D(const float x = 0.0f, const float y = 0.0f); 
     private:
-    // Constructor for internal coordinates.
+    // Constructor to define the point in internal coordinates. 
     Point2D(const coordinate_t x, const coordinate_t y, const bool dummy );
 
     // methods
@@ -27,15 +28,27 @@ class Point2D{
     Point2D & operator = (const Point2D p);
     Point2D & operator += (const Point2D p);
     Point2D & operator -= (const Point2D p);
+#ifdef USE_SINGLE_PRECISION_FLOATING_COORDINATES
     Point2D & operator *= (const float f);
     Point2D & operator /= (const float f);
+#else
+    Point2D & operator *= (const int16_t one_is_128);
+    Point2D & operator /= (const int16_t one_is_128);
+#endif
     bool operator == (const Point2D p) const;
     Point2D operator + (const Point2D p) const;
     Point2D operator - (const Point2D p) const;
-    // return inner product in user coordinates
-    float operator * (const Point2D p) const;
+#ifdef USE_SINGLE_PRECISION_FLOATING_COORDINATES
     Point2D operator * (const float f) const;
     Point2D operator / (const float f) const;
+#else
+    Point2D operator * (const int16_t one_is_128) const;
+    Point2D operator / (const int16_t one_is_128) const;
+#endif
+
+
+    // return inner product in user coordinates
+    float operator * (const Point2D p) const;
     // return absolute values in user coordinates
     float abs() const;
     // normalize the vector in user coordinates
