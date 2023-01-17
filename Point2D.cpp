@@ -93,11 +93,11 @@ float Point2D::abs() const{
     return sqrt(this->x * this->x + this->y * this-> y) / internal_scale;
 }
 float Point2D::normalize(){
-    float r = abs();
+    float r = abs(); // user scale
     if( r != 0.0f ){
         float r_inv = 1.0f/r;
-        this->x *= r_inv;
-        this->y *= r_inv;
+        this->x *= r_inv; // internal scale
+        this->y *= r_inv; // 
     }
     return r;
 }
