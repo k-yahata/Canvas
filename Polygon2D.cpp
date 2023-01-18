@@ -98,12 +98,14 @@ void Polygon2D::add_Point2D( const Point2D p ){
     }
 }
 
+// define the rectangle
 void Polygon2D::rectangle( Point2D p0, Point2D p1 ){
     clear();
-    add_Point2D(p0.x, p0.y);
-    add_Point2D(p1.x, p0.y);
-    add_Point2D(p1.x, p1.y);
-    add_Point2D(p0.x, p1.y);
+    // set by internal coodinates
+    add_Point2D( Point2D(p0.x, p0.y, true) );
+    add_Point2D( Point2D(p1.x, p0.y, true) );
+    add_Point2D( Point2D(p1.x, p1.y, true) );
+    add_Point2D( Point2D(p0.x, p1.y, true) );
 }
 
 
