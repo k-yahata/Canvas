@@ -59,11 +59,16 @@ class Polygon2D{
     void add_Point2D( const Point2D p );
     void add_Point2D( const float x, const float y ); // 中でinternal scale倍
 
-    // Rectangle
+    // Basic Shapes
     void rectangle( Point2D p0, Point2D p1 );  //
-
+    //void segment( Point2D p0, Point2D p1, float weight );
     // ほぼ円(正24角形)
     void circle24( Point2D center, float raduis ); // radiusは中でinternal scale倍
+    
+    // Derive a new shape based on this
+    //Polygon2D frame( float weight );
+    
+    
     // indexの点を返す。
     Point2D get_Point2D(const uint16_t index) const;
     inline uint16_t size(){return this->vertices.size();} 
