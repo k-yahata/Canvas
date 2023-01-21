@@ -57,7 +57,7 @@ class Polygon2D{
     // Functions to define the polygon
     // 点の追加。Polygonの定義は必ずこれで行う。追加時に凸判定も行う
     void add_Point2D( const Point2D p );
-    void add_Point2D( const float x, const float y ); // 中でinternal scale倍
+    void add_Point2D( const float x, const float y ); // 中で(Point2Dで)internal scale倍
 
     // Basic Shapes
     void rectangle( Point2D p0, Point2D p1 );  //
