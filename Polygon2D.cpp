@@ -33,7 +33,7 @@ void Polygon2D::clear(){
 
 // 点の追加。bounding boxと、is_convexの更新
 void Polygon2D::add_Point2D( const float x, const float y ){
-    this->add_Point2D(Point2D( x*internal_scale, y*internal_scale) );
+    this->add_Point2D(Point2D( x, y) );
 }
 
 void Polygon2D::add_Point2D( const Point2D p ){
