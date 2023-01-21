@@ -19,7 +19,6 @@ class Point2D{
     // Constructor to define the point in user coordinates. 
     // The x and y will be multiplied by the internal_scale.
     Point2D(const float x = 0.0f, const float y = 0.0f); 
-    private:
     // Constructor to define the point in internal coordinates. 
     Point2D(const coordinate_t x, const coordinate_t y, const bool dummy );
 
@@ -28,23 +27,19 @@ class Point2D{
     Point2D & operator = (const Point2D p);
     Point2D & operator += (const Point2D p);
     Point2D & operator -= (const Point2D p);
-#ifdef USE_SINGLE_PRECISION_FLOATING_COORDINATES
     Point2D & operator *= (const float f);
     Point2D & operator /= (const float f);
-#else
-    Point2D & operator *= (const int16_t one_is_128);
-    Point2D & operator /= (const int16_t one_is_128);
-#endif
     bool operator == (const Point2D p) const;
     Point2D operator + (const Point2D p) const;
     Point2D operator - (const Point2D p) const;
-#ifdef USE_SINGLE_PRECISION_FLOATING_COORDINATES
     Point2D operator * (const float f) const;
     Point2D operator / (const float f) const;
-#else
-    Point2D operator * (const int16_t one_is_128) const;
-    Point2D operator / (const int16_t one_is_128) const;
-#endif
+
+    // operation for integer operations
+    Point2D & mul_equal_int(const int16_t one_is_128);
+    Point2D & div_equal_int(const int16_t one_is_128);
+    Point2D mul_int(const int16_t one_is_128) const;
+    Point2D div_int(const int16_t one_is_128) const;
 
 
     // return inner product in user coordinates

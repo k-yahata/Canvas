@@ -61,7 +61,7 @@ class Polygon2D{
 
     // Basic Shapes
     void rectangle( Point2D p0, Point2D p1 );  //
-    //void segment( Point2D p0, Point2D p1, float weight );
+    void line_segment( Point2D p0, Point2D p1, float weight );
     // ほぼ円(正24角形)
     void circle24( Point2D center, float raduis ); // radiusは中でinternal scale倍
     

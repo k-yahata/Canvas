@@ -357,15 +357,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_dot( Point2D p0, Color
 template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
 void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_line( const Point2D p0, const Point2D p1, const float weight, Color &color, const uint8_t alpha){
     // 長方形polygon作成
-    Point2D n01 = p1 - p0;
-    n01.normalize();
-    Point2D v(-n01.y, n01.x);
-    v = v * (weight*internal_scale/2);
-    Polygon2D rectangle;
-    rectangle.add_Point2D( p1 + v );
-    rectangle.add_Point2D( p0 + v );
-    rectangle.add_Point2D( p0 - v );
-    rectangle.add_Point2D( p1 - v );
+    Polygon2D rectangle = line_segment( p0, p1, weight );
     fill_convex_polygon(rectangle, color, alpha);
 }
 

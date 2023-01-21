@@ -38,3 +38,4 @@
 # Other
 .DS_STORE
 *.json
+*.sh
