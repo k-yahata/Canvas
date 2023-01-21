@@ -646,10 +646,10 @@ Polygon2D & Polygon2D::operator *= (const float f){
     this->minY *= f;
     this->maxY *= f;
 #else
-    this->minX = int32_t(this->minX * f_int) >> 7;
-    this->maxX = int32_t(this->maxX * f_int) >> 7;
-    this->minY = int32_t(this->minY * f_int) >> 7;
-    this->maxY = int32_t(this->maxY * f_int) >> 7;
+    this->minX = (static_cast<int32_t>(this->minX) * f_int) >> 7;
+    this->maxX = (static_cast<int32_t>(this->maxX) * f_int) >> 7;
+    this->minY = (static_cast<int32_t>(this->minY) * f_int) >> 7;
+    this->maxY = (static_cast<int32_t>(this->maxY) * f_int) >> 7;
 #endif
     return *this;
 }
