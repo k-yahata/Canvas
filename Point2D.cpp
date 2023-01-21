@@ -74,11 +74,11 @@ Point2D & Point2D::div_equal_int(const int16_t one_is_128){
     return *this;
 }
 Point2D Point2D::mul_int(const int16_t one_is_128) const{
-    return Point2D((static_cast<int32_t>(this->x) * one_is_128)>>7, (this->y * one_is_128)>>7, true);
+    return Point2D((static_cast<int32_t>(this->x) * one_is_128)>>7, (static_cast<int32_t>(this->y) * one_is_128)>>7, true);
 }
 Point2D Point2D::div_int(const int16_t one_is_128) const{
     int16_t f_inv = 16384 / one_is_128;
-    return Point2D((static_cast<int32_t>(this->x) * f_inv)>>7, (this->y * f_inv)>>7, true);
+    return Point2D((static_cast<int32_t>(this->x) * f_inv)>>7, (static_cast<int32_t>(this->y) * f_inv)>>7, true);
 }
 
 

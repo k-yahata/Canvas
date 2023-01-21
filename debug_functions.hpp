@@ -7,7 +7,9 @@
 #include <iostream>
 #include <ctime>
 #else
-//#include <Arduino.h>
+#ifdef USE_SERIAL
+#include <Arduino.h>
+#endif
 #endif
 
 template <typename T>
