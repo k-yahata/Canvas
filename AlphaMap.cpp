@@ -1,4 +1,5 @@
 #include "AlphaMap.hpp"
+#include <iostream>
 
 // Constructor
 AlphaMap::AlphaMap(){
@@ -35,6 +36,7 @@ AlphaMap::AlphaMap( Polygon2D polygon ){
     // alloc memory
     try{ 
         uint32_t size_of_map = this->width * this->height;
+        std::cout << " Size:" << this->width << " " << this->height << " " << size_of_map << std::endl;
         this->alpha = new uint8_t[size_of_map];
         uint8_t* p = alpha;
         for( uint32_t n = 0; n < size_of_map; n++ ){
@@ -71,6 +73,17 @@ AlphaMap::AlphaMap( Polygon2D polygon ){
 // Destructor
 AlphaMap::~AlphaMap(){
     if( alpha != nullptr ){
-        delete [] alpha;
+       // delete [] alpha;
     }
 }
+
+
+uint8_t* AlphaMap::get_pointer_at( pixel_index_t x, pixel_index_t y ){
+    if( alpha != nullptr ){
+        std::cout << x << " " << y << std::endl;
+        return (alpha + y * width + x);
+    }else{
+        return nullptr;
+    }
+}
+    

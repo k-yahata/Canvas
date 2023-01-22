@@ -1,3 +1,6 @@
+#ifndef __ALPHA_MAP_HPP_
+#define __ALPHA_MAP_HPP_
+
 #include "Polygon2D.hpp"
 
 /*==============================================================//
@@ -26,5 +29,19 @@ class AlphaMap{
     //
     ~AlphaMap();
     
+    // return center_x
+    inline int16_t cx() const{ return center_x; }
+    // return center_y
+    inline int16_t cy() const{ return center_y; }
+    // return center_x
+    inline uint16_t w() const{ return width; }
+    // return center_y
+    inline uint16_t h() const{ return height; }
     
+    // 
+    uint8_t* get_pointer_at( pixel_index_t x, pixel_index_t y );
+
+    inline bool not_defined(){ return (alpha == nullptr); }
 };
+
+#endif

@@ -27,6 +27,7 @@ class Canvas
 #include "Polygon2D.hpp"
 #include "ColoredPolygon.hpp"
 #include "VectorPicture.hpp"
+#include "AlphaMap.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -118,7 +119,7 @@ class Canvas{
     // Draw filled polygon, no edge / ポリゴンを塗りつぶす。ポリゴンは自動で閉じる。
     void fill_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha = 0U);
 
-    // Draw a segment, from p0 to p1 
+    // Draw a line segment, from p0 to p1 
     void draw_line( const Point2D p0, const Point2D p1, const float weight, Color &color, const uint8_t alpha = 0U);
 
     // Fill the pixel including the point p0
@@ -159,6 +160,9 @@ class Canvas{
         draw_polygon( polygon.polygon, weight, polygon.face_color, polygon.alpha );        
     }
     // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U );
+
+    //
+    void draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color );
 
 
     private:
@@ -249,6 +253,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_polygon( Polygon2D &po
 // this function is private and should be called by fill_polygon();
 template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
 void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_not_convex_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha){
+
     // get minimum rectangle
     pixel_index_t isx, isy, iex, iey;
     polygon.get_bounding_box(isx, isy, iex, iey);
@@ -505,6 +510,54 @@ void draw_circle( const float cx, const float cy, const float radius, const floa
 }
 */
 
+template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
+void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color ){
+
+    if( map.not_defined() ){
+        return;
+    }
+
+    // 
+    pixel_index_t isx = x - map.cx();
+    pixel_index_t isy = y - map.cy();
+    pixel_index_t iex = isx + map.w();
+    pixel_index_t iey = isy + map.h();
+
+    if( isx >= this->width 
+        || iex <= 0 
+        || isy >= this->height 
+        || iey <= 0 ){
+        return; // The map is out of canvas. Do nothing.
+    }
+
+    pixel_index_t offset_x_alpha = 0; 
+    pixel_index_t offset_y_alpha = 0; 
+    if( isx < 0 ){
+        offset_x_alpha = - isx;
+        isx = 0;
+    } 
+    if( isy < 0 ){
+        offset_y_alpha = - isy;
+        isy = 0;
+    }
+    if( iex > width ) iex = width;
+    if( iey > height ) iey = height;
+
+    Color org_color;
+    Color new_color;
+    for( int iy = isy; iy < iey; iy++ ){
+        uint8_t *ppixel = get_pointer_to_data_unsafe(isx, iy);
+        uint8_t *p_alpha = map.get_pointer_at( offset_x_alpha, iy - isy + offset_y_alpha );
+        for( int ix = isx; ix < iex; ix++ ){
+            get_Color( ppixel, org_color );            
+            alpha_blend( org_color, color, *p_alpha, new_color );
+            set_Color( ppixel, new_color );
+            ppixel += bytes_per_pixel;
+            p_alpha++;
+        }
+    }
+    
+}
 
 template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
 bool Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::saveBMP(std::string file_name){
@@ -570,4 +623,8 @@ bool Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::saveBMP(std::string file_na
     return true;
 }
 
+
+
+
 #endif
+

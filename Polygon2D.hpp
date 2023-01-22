@@ -15,7 +15,7 @@ class Polygon2D{
     //================
     private:
     std::vector<Point2D> vertices;
-    // bounding box
+    // bounding box, internal scale
     coordinate_t minX;
     coordinate_t maxX;
     coordinate_t minY;
