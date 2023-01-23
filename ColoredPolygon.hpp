@@ -22,13 +22,13 @@ class ColoredPolygon2D{
     ColoredPolygon2D( const Polygon2D &polygon );
     ColoredPolygon2D( const Polygon2D &polygon, const ColorRGB face_color );
     ColoredPolygon2D( const ColorRGB face_color );
-    ColoredPolygon2D( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 0 );
+    ColoredPolygon2D( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 128 );
 
     //================
     // funcsions 
     //================
     public:
-    inline void set_color( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 0 ){
+    inline void set_color( const color_t r, const color_t g, const color_t b, const uint8_t alpha = 128 ){
         this->face_color.color[0] = r;
         this->face_color.color[1] = g;
         this->face_color.color[2] = b;

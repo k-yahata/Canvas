@@ -35,7 +35,7 @@ polygon.add_Point2D(Point2D( 48, 10 ));
 polygon.add_Point2D(Point2D( 28, 50 ));
 polygon.add_Point2D(Point2D( 68, 50 ));
 ColorRGB c(0,0,31);
-uint8_t alpha = 0;
+uint8_t alpha = 128;
 canvas.fill_polygon( polygon, c, alpha );
 
 // Save BMP file to see the image.
