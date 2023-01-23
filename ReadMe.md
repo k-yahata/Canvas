@@ -19,7 +19,7 @@ This memory is necessary for antialiasing and alpha blending.
 
 
 # How to use.
-## Define sub class when the data format og the disply has been implemented.
+## Define sub class when the data format of the disply has been implemented.
 1. If the data format is RGB232 (2bytes), RGB565 (2bytes) or grayscale(1bytes), define sub class from 
 Canvas_RGB232, Canvas_RGB565 class or Canvas_Gray8 with specifying images size like below. 
 ```
