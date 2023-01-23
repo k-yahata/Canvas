@@ -30,6 +30,9 @@ int main(){
 
 
     canvas_SSD1331.draw_AlphaMap(a_triangle, 0, 0, color_triangle, alpha);
+    canvas_SSD1331.draw_AlphaMap(a_triangle, -5, 5, color_triangle, alpha);
+    canvas_SSD1331.draw_AlphaMap(a_triangle, -10, 10, color_triangle, alpha);
+    canvas_SSD1331.draw_AlphaMap(a_triangle, -15, 15, color_triangle, alpha);
     //canvas_SSD1331.fill_polygon(circle, color_circle, alpha);
     //canvas_SSD1331.fill_polygon(square, color_square, alpha);
 

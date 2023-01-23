@@ -551,7 +551,6 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_AlphaMap( AlphaMap map
         for( int ix = isx; ix < iex; ix++ ){
             get_Color( ppixel, org_color );
             uint8_t total_alpha = (( uint16_t(alpha) * (uint16_t(*p_alpha) )) >> 7 );
-            std::cout << (int)total_alpha << std::endl;
             alpha_blend( org_color, color, total_alpha, new_color );
             set_Color( ppixel, new_color );
             ppixel += bytes_per_pixel;
