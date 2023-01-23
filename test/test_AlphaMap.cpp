@@ -29,7 +29,7 @@ int main(){
     uint8_t alpha = 64; 
 
 
-    canvas_SSD1331.draw_AlphaMap(a_triangle, 0, 0, color_triangle);
+    canvas_SSD1331.draw_AlphaMap(a_triangle, 0, 0, color_triangle, alpha);
     //canvas_SSD1331.fill_polygon(circle, color_circle, alpha);
     //canvas_SSD1331.fill_polygon(square, color_square, alpha);
 

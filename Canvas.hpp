@@ -10,7 +10,7 @@ class Canvas
     the child class. 
     The drawing functions are written to support alpha channel and 
     antialiasing.
-    alpha = 0 is opaque and alpha = 128 is transparent 
+    alpha = 0 is transparent and alpha = 128 is opaque 
 
     - Coordinates
     The coordinates (x,y) of the center of the first pixel is (0,0).
@@ -117,24 +117,24 @@ class Canvas{
     void clear( uint8_t val = 0U );
 
     // Draw filled polygon, no edge / ポリゴンを塗りつぶす。ポリゴンは自動で閉じる。
-    void fill_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha = 0U);
+    void fill_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha = 128U);
 
     // Draw a line segment, from p0 to p1 
-    void draw_line( const Point2D p0, const Point2D p1, const float weight, Color &color, const uint8_t alpha = 0U);
+    void draw_line( const Point2D p0, const Point2D p1, const float weight, Color &color, const uint8_t alpha = 128U);
 
     // Fill the pixel including the point p0
-    void draw_dot( Point2D p0, Color &color, const uint8_t alpha = 0U);
+    void draw_dot( Point2D p0, Color &color, const uint8_t alpha = 128U);
 
     // Draw edges of polygon. The polygon is automatically closed.
     // If weight is larger than 2.0f, the draw_polygon_HQ(..) is recommended.
     // ポリゴンの辺を描画する。閉じる。高速簡易実装のため、線が太い場合はdraw_polygon_HQの方がおすすめ
-    void draw_polygon( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
+    void draw_polygon( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 128U);
 
     // Draw edges of polygon. The polygon is automatically closed.
     // Because this function internaly create a new polygon representing the edges, it is relatively slow.
     // If edges are crossing, the crossing area may not be filled. 
     // ポリゴンの辺を描画する。閉じる。低速だが高品質。ただし、辺が交差したところは塗られない仕様
-    void draw_polygon_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U);
+    void draw_polygon_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 128U);
 
     // 
     private:
@@ -145,12 +145,12 @@ class Canvas{
     public:
     // Draw edges of polygon.
     // If weight is larger than 2.0f, the draw_polygon_HQ(..) is recommended.
-    void draw_segments( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U, const POLYGON_CLOSING_MODE oc = OPEN );
+    void draw_segments( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 128U, const POLYGON_CLOSING_MODE oc = OPEN );
 
     // Draw edges of polygon.
     // Because this function internaly create a new polygon representing the edges, it is relatively slow.
     // ポリゴンの辺を描く。低速高品質版。
-    void draw_segments_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 0U, const POLYGON_CLOSING_MODE oc = OPEN );
+    void draw_segments_HQ( Polygon2D &polygon, const float weight, Color &color, const uint8_t alpha = 128U, const POLYGON_CLOSING_MODE oc = OPEN );
     
     
     inline void fill_polygon( ColoredPolygon2D &polygon ){
@@ -159,10 +159,10 @@ class Canvas{
     inline void draw_polygon( ColoredPolygon2D &polygon, const float weight){
         draw_polygon( polygon.polygon, weight, polygon.face_color, polygon.alpha );        
     }
-    // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U );
+    // void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 128U );
 
     //
-    void draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color );
+    void draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color, uint8_t alpha );
 
 
     private:
@@ -171,7 +171,7 @@ class Canvas{
     void fill_not_convex_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha );
     inline void alpha_blend( const Color color_org, const Color color_cur, const uint8_t alpha, Color &new_color ) const{
         for( int c = 0; c < Color::n_color; c++ ){
-            new_color.color[c] = ( ( alpha * ( static_cast<color_alpha_blend_t>(color_org.color[c]) - static_cast<color_alpha_blend_t>(color_cur.color[c]) )) >> 7 ) + color_cur.color[c];
+            new_color.color[c] = ( ( alpha * ( static_cast<color_alpha_blend_t>(color_cur.color[c]) - static_cast<color_alpha_blend_t>(color_org.color[c]) )) >> 7 ) + color_org.color[c];
 //            //antialias off
         //    if( alpha <= 64 ){
         //        new_color.color[c] = color_cur.color[c];
@@ -278,7 +278,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_not_convex_polygon( Po
         // 先に占有率を計算
         polygon.compute_covered_areas( iy, sx_mix, sx_out, line_buffer );
         for( int ix = sx_mix; ix <= sx_out; ix++ ){
-            uint8_t total_alpha = 128 - ( 128 - alpha ) * line_buffer[ix-sx_mix] / Polygon2D::n_subpixels;
+            uint8_t total_alpha = alpha * line_buffer[ix-sx_mix] / Polygon2D::n_subpixels;
             //fill_pixel( ppixel, r, g, b, total_alpha );
             get_Color( ppixel, org_color );
             alpha_blend( org_color, color, total_alpha, new_color );
@@ -318,7 +318,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_convex_polygon( Polygo
         Color org_color;
         Color new_color;
         for( pixel_index_t ix = sx_mix_0; ix < sx_inc; ix++ ){
-            uint8_t total_alpha = 128 - ( 128 - alpha ) * line_buffer[ix-sx_mix_0] / Polygon2D::n_subpixels;
+            uint8_t total_alpha = alpha * line_buffer[ix-sx_mix_0] / Polygon2D::n_subpixels;
             get_Color( ppixel, org_color );
             alpha_blend( org_color, color, total_alpha, new_color );
             set_Color( ppixel, new_color );
@@ -335,7 +335,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::fill_convex_polygon( Polygo
         // 高速化のため、ポリゴンが画素を覆っている面積を1行分計算してから色を処理する。
         convex_polygon.compute_covered_areas( iy, sx_mix_1, sx_out1, line_buffer );
         for( pixel_index_t ix = sx_mix_1; ix <= sx_out1; ix++ ){
-            uint8_t total_alpha = 128 - ( 128 - alpha ) * line_buffer[ix-sx_mix_1] / Polygon2D::n_subpixels;
+            uint8_t total_alpha = alpha * line_buffer[ix-sx_mix_1] / Polygon2D::n_subpixels;
             get_Color( ppixel, org_color );
             alpha_blend( org_color, color, total_alpha, new_color );
             set_Color( ppixel, new_color );
@@ -505,13 +505,13 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_segments_HQ( Polygon2D
     }
 }
 /*
-void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 0U ){
+void draw_circle( const float cx, const float cy, const float radius, const float weight, Color &color, const uint8_t alpha = 128U ){
 
 }
 */
 
 template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
-void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color ){
+void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_AlphaMap( AlphaMap map, pixel_index_t x, pixel_index_t y, Color &color, uint8_t alpha ){
 
     if( map.not_defined() ){
         return;
@@ -549,8 +549,10 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_AlphaMap( AlphaMap map
         uint8_t *ppixel = get_pointer_to_data_unsafe(isx, iy);
         uint8_t *p_alpha = map.get_pointer_at( offset_x_alpha, iy - isy + offset_y_alpha );
         for( int ix = isx; ix < iex; ix++ ){
-            get_Color( ppixel, org_color );            
-            alpha_blend( org_color, color, *p_alpha, new_color );
+            get_Color( ppixel, org_color );
+            uint8_t total_alpha = (( uint16_t(alpha) * (uint16_t(*p_alpha) )) >> 7 );
+            std::cout << (int)total_alpha << std::endl;
+            alpha_blend( org_color, color, total_alpha, new_color );
             set_Color( ppixel, new_color );
             ppixel += bytes_per_pixel;
             p_alpha++;

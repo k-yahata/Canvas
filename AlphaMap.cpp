@@ -36,7 +36,6 @@ AlphaMap::AlphaMap( Polygon2D polygon ){
     // alloc memory
     try{ 
         uint32_t size_of_map = this->width * this->height;
-        std::cout << " Size:" << this->width << " " << this->height << " " << size_of_map << std::endl;
         this->alpha = new uint8_t[size_of_map];
         uint8_t* p = alpha;
         for( uint32_t n = 0; n < size_of_map; n++ ){
@@ -62,7 +61,7 @@ AlphaMap::AlphaMap( Polygon2D polygon ){
          // 描画
         uint8_t *ppixel = this->alpha + sx_mix + iy * this->width;
         // 占有率を計算
-        polygon.compute_covered_areas( iy, sx_mix, sx_out, ppixel );
+        polygon_shifted.compute_covered_areas( iy, sx_mix, sx_out, ppixel );
         for( int ix = sx_mix; ix <= sx_out; ix++ ){
             *ppixel = (128 * (*ppixel) ) / Polygon2D::n_subpixels;
             ppixel++;
@@ -80,7 +79,6 @@ AlphaMap::~AlphaMap(){
 
 uint8_t* AlphaMap::get_pointer_at( pixel_index_t x, pixel_index_t y ){
     if( alpha != nullptr ){
-        std::cout << x << " " << y << std::endl;
         return (alpha + y * width + x);
     }else{
         return nullptr;

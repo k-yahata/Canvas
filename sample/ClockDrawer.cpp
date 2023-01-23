@@ -41,7 +41,7 @@ void Drawer::init(){
     frame.polygon.concat_inversely( temp );
     // set color and transparency, 色と透明度の設定
     frame.face_color = this->color_dial;
-    frame.alpha = 0;
+    frame.alpha = 128;
     // 文字盤に色付きポリゴンを追加
     this->dial.addColoredPolygon(frame);
     // show the coordinates of the polygon for debug, 座標の表示。デバッグ用。
@@ -88,8 +88,8 @@ void Drawer::draw_clock( Canvas_SSD1331 &canvas, int hour, int min, float second
     Polygon2D m = minute_hand.rotate( deg_minute_hand, center );
     Polygon2D s = second_hand.rotate( deg_second_hand, center );
     // draw the hands, 針の描画
-    canvas.fill_polygon( h, const_cast<ColorRGB&>(color_hour_hand), 0); 
-    canvas.fill_polygon( m, const_cast<ColorRGB&>(color_minute_hand), 0);
-    canvas.fill_polygon( s, const_cast<ColorRGB&>(color_second_hand), 0);
+    canvas.fill_polygon( h, const_cast<ColorRGB&>(color_hour_hand), 128); 
+    canvas.fill_polygon( m, const_cast<ColorRGB&>(color_minute_hand), 128);
+    canvas.fill_polygon( s, const_cast<ColorRGB&>(color_second_hand), 128);
 
 }
