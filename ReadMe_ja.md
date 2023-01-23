@@ -36,7 +36,7 @@ fill_polygon関数などを呼び出して描画します。
 Canvas_SSD1331 canvas;          // Canvasクラス
 Polygon2D polygon;              // ポリゴン
 Color_RGB565 color(0,63,31);    // 色, 
-uint8_t alpha = 0;              // 透明度[0-128], 0:透明, 128:透明
+uint8_t alpha = 128;              // 不透明度[0-128], 0:透明, 128:不透明
 polygon.add_Point2D( 10, 10 );
 polygon.add_Point2D( 10, 30 );
 polygon.add_Point2D( 30, 30 );
