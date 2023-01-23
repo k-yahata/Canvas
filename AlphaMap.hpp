@@ -7,7 +7,7 @@
   class AlphaMap
      2D image of alpha channnel.
      The alpha value should be in range from 0 to 128, where 0 
-     means opaque and 128 means transparent.
+     means transparent and 128 means opaque.
 /===============================================================*/
 
 class AlphaMap{
