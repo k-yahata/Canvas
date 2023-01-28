@@ -37,7 +37,7 @@ int SVG::save( std::string file_name ){
 //SVG::read( std::string file_name );
 
 std::string SVG::get_svg_command_from_a_ColoredPolygon( ColoredPolygon2D &cp ){
-    std::string out_str = "<polygon points=\"";
+    std::string out_str = "        <polygon points=\"";
     int n_points = cp.polygon.size();
     for( int n = 0; n < n_points; n++ ){
         Point2D p = cp.polygon.get_Point2D(n);
