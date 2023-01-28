@@ -10,7 +10,7 @@ class VectorPicture{
     std::vector<ColoredPolygon2D> p;
 
     public:
-    void addColoredPolygon(ColoredPolygon2D p);
+    void add_ColoredPolygon(ColoredPolygon2D p);
 
 };
 

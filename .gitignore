@@ -34,8 +34,11 @@
 
 # Images
 *.bmp
+*.svg
 
 # Other
 .DS_STORE
 *.json
 *.sh
+
+*.key

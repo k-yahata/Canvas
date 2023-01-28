@@ -43,7 +43,7 @@ void Drawer::init(){
     frame.face_color = this->color_dial;
     frame.alpha = 128;
     // 文字盤に色付きポリゴンを追加
-    this->dial.addColoredPolygon(frame);
+    this->dial.add_ColoredPolygon(frame);
     // show the coordinates of the polygon for debug, 座標の表示。デバッグ用。
     frame.polygon.print();
 
@@ -56,11 +56,11 @@ void Drawer::init(){
     frame.polygon.add_Point2D(  49, 10 );
     frame.polygon.add_Point2D(  49, 6 );
     // 追加
-    this->dial.addColoredPolygon( frame );
+    this->dial.add_ColoredPolygon( frame );
     // Add ticks with rotating by 30 degree, 30度ずつ回転させながら、文字盤にメモリを追加
     for( int t = 1; t < 12; t++ ){
         frame.polygon.rotate_equal(30, center);
-        this->dial.addColoredPolygon( frame );
+        this->dial.add_ColoredPolygon( frame );
     }
 
     // Draw the dial without the hands. 針のない文字盤を描画
