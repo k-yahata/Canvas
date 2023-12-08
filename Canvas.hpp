@@ -115,6 +115,7 @@ class Canvas{
     public:
     // Set all pixel values to val
     void clear( uint8_t val = 0U );
+    void clear( uint8_t val_u = 0U, uint8_t val_l = 0U );
 
     // Draw filled polygon, no edge / ポリゴンを塗りつぶす。ポリゴンは自動で閉じる。
     void fill_polygon( Polygon2D &polygon, Color &color, const uint8_t alpha = 128U);
@@ -219,6 +220,13 @@ template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL,
 void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::clear( uint8_t val ){
     for( int n = 0; n < n_data; n++ ){
         data[n] = val;
+    }
+}
+template <unsigned int WIDTH, unsigned int HEIGHT, unsigned int BYTES_PER_PIXEL, class Color> 
+void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::clear( uint8_t val_u = 0U, uint8_t val_l = 0U ){
+    for( int n = 0; n < n_data; n += 2 ){
+        data[n] = val_u;
+        data[n+1] = val_l;
     }
 }
 
@@ -352,7 +360,7 @@ void Canvas<WIDTH, HEIGHT, BYTES_PER_PIXEL, Color> ::draw_dot( Point2D p0, Color
     if( 0 <= ix && ix < width && 0<= iy && iy < height ){
         Color org_color;
         Color new_color;
-        uint8_t* ppixel = &data[iy*width+ix];
+        uint8_t* ppixel = this->get_pointer_to_data_unsafe(ix, iy);
         get_Color( ppixel, org_color );
         alpha_blend( org_color, color, alpha, new_color );
         set_Color( ppixel, new_color );
